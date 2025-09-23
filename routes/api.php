@@ -10,6 +10,10 @@ Route::middleware('auth:sanctum')->group(function () {
     
     Route::post('auth/logout', [App\Http\Controllers\AuthController::class, 'logout']);
     Route::apiResource('users', App\Http\Controllers\UserController::class);
+    Route::get('chats/get', [App\Http\Controllers\ChatsController::class, 'getChats']);
+
+    Route::get('messages/{chatId}', [App\Http\Controllers\MessagesController::class, 'getChatMessages']);
+    Route::post('messages/send', [App\Http\Controllers\MessagesController::class, 'sendMessage']);
 });
 
 Route::post('auth/login', [App\Http\Controllers\AuthController::class, 'login']);

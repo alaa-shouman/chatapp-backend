@@ -4,62 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Models\chats;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ChatsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function getChats()
     {
-        //
+        if(Auth::check()){
+            return chats::whereHas('chat_participants', function($query){
+                $query->where('user_id', Auth::id());
+            })->with('chat_participants.user')->get();
+        } else {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(chats $chats)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(chats $chats)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, chats $chats)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(chats $chats)
-    {
-        //
-    }
+   
 }

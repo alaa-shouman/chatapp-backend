@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('chats', function (Blueprint $table) {
             $table->id();
+            $table->string('chat_id',100)->unique();
             $table->string('title')->nullable();
             $table->enum('type', ['group', 'private'])->default('private');
             $table->timestamp('joined_at')->nullable();
