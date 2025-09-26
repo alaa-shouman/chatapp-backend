@@ -98,9 +98,15 @@ class MessagesController extends Controller
 
             $message->load('user');
 
+             Log::info('Broadcasting message', [
+            'message_id' => $message->id,
+            'chatId' => $validated['chatId'],
+            'sender_id' => $sender_id
+        ]);
+
             // Broadcast the message
             broadcast(new MessageSent($message, $sender, $validated['chatId']))->toOthers();
-            Log::info($validated['chatId']);
+            // MessageSent::dispatch($message, $sender, $validated['chatId']);
             return response()->json([
                 'message' => 'Message sent successfully',
                 'data' => $message->load('user')->load('chat'),

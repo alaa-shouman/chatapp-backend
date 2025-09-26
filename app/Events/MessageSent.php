@@ -6,7 +6,6 @@ use App\Models\messages;
 use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -24,7 +23,7 @@ class MessageSent implements ShouldBroadcast
     /**
      * Create a new event instance.
      */
-    public function __construct(messages $message, User $user,string $chatId)
+    public function __construct(messages $message, User $user, string $chatId)
     {
         $this->message = $message;
         $this->user = $user;
@@ -38,8 +37,9 @@ class MessageSent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        Log::info('MessageSent broadcastOn', ['chatId' => $this->chatId]);
-        return new PrivateChannel('chat.' . $this->chatId);
+        Log::info('MessageSent broadcastOn', ['chatId' => $this->chatId, 'channel' => 'chat.' . $this->chatId]);
+        return new Channel('chat.' . $this->chatId);
+        // return ['chat'.$this->chatId];
     }
 
     /**
@@ -49,7 +49,14 @@ class MessageSent implements ShouldBroadcast
      */
     public function broadcastWith()
     {
-        Log::info('MessageSent broadcastWith', $this->message->id, $this->message->message, $this->user->id, $this->user->name);
+        Log::info('MessageSent broadcastWith', [
+            'message_id' => $this->message->id,
+            'message_content' => $this->message->message,
+            'user_id' => $this->user->id,
+            'user_name' => $this->user->name,
+            'chat_id' => $this->chatId
+        ]);
+
         return [
             'id' => $this->message->id,
             'message' => $this->message->message,
