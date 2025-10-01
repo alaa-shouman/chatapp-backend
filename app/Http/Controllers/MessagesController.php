@@ -34,7 +34,7 @@ class MessagesController extends Controller
             // Use the integer id for the foreign key relationship
             $messages = messages::where('chat_id', $chat->id)
                 ->with('user')
-                ->orderBy('created_at', 'asc')
+                ->orderBy('created_at', 'desc')
                 ->paginate($perPage, ['*'], 'page', $page);
 
             return response()->json([

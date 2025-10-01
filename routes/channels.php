@@ -10,6 +10,6 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
 
 
 Broadcast::channel('chat.{chatId}', function ($user, $chatId) {
-    Log::info('chat channel', ['user' => $user, 'chatId' => $chatId]); 
+    Log::info('chat channel', ['user' => $user, 'chatId' => $chatId]);
     return true;
 });

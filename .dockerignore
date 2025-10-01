@@ -1,0 +1,14 @@
+# macOS junk
+.DS_Store
+._*
+
+
+# Laravel
+/vendor
+/node_modules
+/storage/*.key
+.env.example
+
+# Git
+.git
+.gitignore
